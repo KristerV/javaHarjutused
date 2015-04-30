@@ -15,8 +15,8 @@ public class Foor {
     private StackPane stack;
     private Scene scene;
     private Stage stage;
-    private int sceneWidth = 300;
-    private int sceneHeight = 700;
+    private int sceneWidth = 800;
+    private int sceneHeight = 800;
     private int foorWidth = 200;
     private Circle punane;
     private Circle kollane;
@@ -26,10 +26,20 @@ public class Foor {
     private int pausideJarg = 0;
     private int pausideArv;
 
+
     public Foor() {
-        stage = new Stage();
         setupStage();
         joonistaFoor();
+    }
+
+    public Foor(String suund) {
+        setupStage();
+        joonistaFoorSuunaga(suund);
+    }
+
+    public Foor(String suund, Stage primaryStage) {
+        setupStage(primaryStage);
+        joonistaFoorSuunaga(suund);
     }
 
     public void punane() {
@@ -76,43 +86,85 @@ public class Foor {
     }
 
     private void joonistaFoor() {
+        joonistaFoorSuunaga("");
+    }
+
+    private void joonistaFoorSuunaga(String suund) {
+        int x = 0;
+        int y = 0;
+
+        if (!suund.isEmpty()) {
+            foorWidth = foorWidth / 3;
+            switch (suund) {
+                case "vasak":
+                    x = -300;
+                    break;
+                case "parem":
+                    x = 300;
+                    break;
+                case "üleval":
+                    y = -300;
+                    break;
+                case "all":
+                    y = 300;
+                    break;
+            }
+        }
+
 
         // Kast
         Rectangle kast = new Rectangle();
         kast.setWidth(foorWidth);
         kast.setHeight(foorWidth * 3);
         kast.setFill(Color.DIMGRAY);
-        kast.setId("FoorKast");
+        kast.setTranslateX(x);
+        kast.setTranslateY(y);
 
         // Punane
         punane = new Circle();
         punane.setFill(varvid[0]);
         punane.setRadius(foorWidth / 2.5);
-        punane.setTranslateY(-foorWidth);
-        punane.setId("FoorPunane");
+        punane.setTranslateX(x);
+        punane.setTranslateY(-foorWidth + y);
 
         // Kollane
         kollane = new Circle();
         kollane.setFill(varvid[0]);
         kollane.setRadius(foorWidth / 2.5);
-        kollane.setId("FoorKollane");
+        kollane.setTranslateX(x);
+        kollane.setTranslateY(y);
 
         // Roheline
         roheline = new Circle();
         roheline.setFill(varvid[0]);
         roheline.setRadius(foorWidth / 2.5);
-        roheline.setTranslateY(foorWidth);
-        roheline.setId("FoorRoheline");
+        roheline.setTranslateX(x);
+        roheline.setTranslateY(foorWidth + y);
 
         // Lisa elemendid StackPane sisse
         stack.getChildren().addAll(kast, punane, kollane, roheline);
     }
 
     private void setupStage() {
+        stage = new Stage();
         stack = new StackPane();
         scene = new Scene(stack, sceneWidth, sceneHeight);
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void setupStage(Stage stage) {
+
+        if (stage.getScene() == null) {
+            stack = new StackPane();
+            stack.setId("stack");
+            scene = new Scene(stack, sceneWidth, sceneHeight);
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            scene = stage.getScene();
+            stack = (StackPane) scene.lookup("#stack");
+        }
     }
 
     public void paus(double i) {
