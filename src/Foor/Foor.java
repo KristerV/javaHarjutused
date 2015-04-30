@@ -93,9 +93,11 @@ public class Foor {
         int x = 0;
         int y = 0;
         int rotate = 0;
+        double scale = 1;
 
         if (!suund.isEmpty()) {
             sceneSize = sceneSize / 3;
+            scale = 0.3;
             switch (suund) {
                 case "vasakul":
                     x = -sceneSize;
@@ -147,8 +149,8 @@ public class Foor {
         // Ja liiguta StackPane paika
         stack.setTranslateX(x);
         stack.setTranslateY(y);
-        stack.setScaleX(0.3);
-        stack.setScaleY(0.3);
+        stack.setScaleX(scale);
+        stack.setScaleY(scale);
         stack.setRotate(rotate);
     }
 

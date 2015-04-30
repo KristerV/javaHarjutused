@@ -10,17 +10,36 @@ public class Ristmik extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Foor foor = new Foor();
         Foor foor1 = new Foor("üleval", primaryStage);
         Foor foor2 = new Foor("all", primaryStage);
         Foor foor3 = new Foor("paremal", primaryStage);
         Foor foor4 = new Foor("vasakul", primaryStage);
 
+        foor.kollane();
         foor1.punane();
         foor2.punane();
         foor3.roheline();
         foor4.roheline();
 
         for (int i = 0; i < 5; i++) {
+            foor.paus(0.8);
+            foor.kollane();
+            foor.paus(0.8);
+            foor.kollane();
+            foor.paus(0.8);
+            foor.kollane();
+            foor.paus(0.8);
+            foor.kollane();
+            foor.paus(0.8);
+            foor.kollane();
+            foor.paus(0.8);
+            foor.kollane();
+            foor.paus(0.8);
+            foor.kollane();
+            foor.paus(0.8);
+            foor.kollane();
+
             foor1.paus(11);
             punasestRoheliseks(foor1);
             foor1.paus(5);
