@@ -111,7 +111,6 @@ public class Foor {
             }
         }
 
-
         // Kast
         Rectangle kast = new Rectangle();
         kast.setWidth(foorWidth);

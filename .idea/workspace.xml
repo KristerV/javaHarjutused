@@ -60,21 +60,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Ristmik.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Ristmik.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Foor/Ristmik.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.37656903">
-              <caret line="15" column="51" selection-start-line="15" selection-start-column="51" selection-end-line="15" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="14" column="53" selection-start-line="14" selection-start-column="53" selection-end-line="14" selection-end-column="53" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Foor.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Foor.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Foor/Foor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="162" column="25" selection-start-line="162" selection-start-column="25" selection-end-line="162" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.12133891">
+              <caret line="142" column="41" selection-start-line="142" selection-start-column="41" selection-end-line="142" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1109#1110#0" expanded="true" />
@@ -114,8 +114,8 @@
       <list>
         <option value="$PROJECT_DIR$/src/Foor/Main.java" />
         <option value="$PROJECT_DIR$/src/Foor/FoorBaas.java" />
-        <option value="$PROJECT_DIR$/src/Foor/Foor.java" />
         <option value="$PROJECT_DIR$/src/Foor/Ristmik.java" />
+        <option value="$PROJECT_DIR$/src/Foor/Foor.java" />
       </list>
     </option>
   </component>
@@ -611,10 +611,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Foor/Foor.java">
+    <entry file="file://$PROJECT_DIR$/src/Foor/Ristmik.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="162" column="25" selection-start-line="162" selection-start-column="25" selection-end-line="162" selection-end-column="25" />
+          <caret line="14" column="53" selection-start-line="14" selection-start-column="53" selection-end-line="14" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Foor/Foor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12133891">
+          <caret line="142" column="41" selection-start-line="142" selection-start-column="41" selection-end-line="142" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1109#1110#0" expanded="true" />
@@ -626,14 +634,6 @@
             <element signature="e#2222#2223#0" expanded="true" />
             <element signature="e#2261#2262#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Foor/Ristmik.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37656903">
-          <caret line="15" column="51" selection-start-line="15" selection-start-column="51" selection-end-line="15" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
