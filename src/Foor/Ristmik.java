@@ -11,31 +11,65 @@ public class Ristmik extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Foor foor1 = new Foor("üleval", primaryStage);
-        Foor foor2 = new Foor("parem", primaryStage);
-        Foor foor3 = new Foor("vasak", primaryStage);
-        Foor foor4 = new Foor("all", primaryStage);
+        Foor foor2 = new Foor("all", primaryStage);
+        Foor foor3 = new Foor("paremal", primaryStage);
+        Foor foor4 = new Foor("vasakul", primaryStage);
+
+        foor1.punane();
+        foor2.punane();
+        foor3.roheline();
+        foor4.roheline();
+
         for (int i = 0; i < 5; i++) {
-            foor1.punane();
+            foor1.paus(11);
+            punasestRoheliseks(foor1);
             foor1.paus(5);
-            foor1.kollane();
-            foor1.paus(1);
-            foor1.punane();
-            foor1.kollane();
-            foor1.roheline();
-            foor1.paus(5);
-            foor1.roheline();
-            foor1.paus(0.5);
-            foor1.roheline();
-            foor1.paus(0.5);
-            foor1.roheline();
-            foor1.paus(0.5);
-            foor1.roheline();
-            foor1.paus(0.5);
-            foor1.roheline();
-            foor1.paus(0.5);
-            foor1.roheline();
-            foor1.paus(0.5);
-            foor1.roheline();
+            rohelisestPunaseks(foor1);
+            foor1.paus(3);
+
+            foor2.paus(11);
+            punasestRoheliseks(foor2);
+            foor2.paus(5);
+            rohelisestPunaseks(foor2);
+            foor2.paus(3);
+
+            foor3.paus(5);
+            rohelisestPunaseks(foor3);
+            foor3.paus(14);
+            punasestRoheliseks(foor3);
+
+            foor4.paus(5);
+            rohelisestPunaseks(foor4);
+            foor4.paus(14);
+            punasestRoheliseks(foor4);
         }
+    }
+
+    private void rohelisestPunaseks(Foor foor) {
+        foor.roheline();
+        foor.paus(0.5);
+        foor.roheline();
+        foor.paus(0.5);
+        foor.roheline();
+        foor.paus(0.5);
+        foor.roheline();
+        foor.paus(0.5);
+        foor.roheline();
+        foor.paus(0.5);
+        foor.roheline();
+        foor.paus(0.5);
+        foor.roheline();
+        foor.kollane();
+        foor.paus(1);
+        foor.kollane();
+        foor.punane();
+    }
+
+    private void punasestRoheliseks(Foor foor) {
+        foor.kollane();
+        foor.paus(1);
+        foor.punane();
+        foor.kollane();
+        foor.roheline();
     }
 }

@@ -15,16 +15,15 @@ public class Foor {
     private StackPane stack;
     private Scene scene;
     private Stage stage;
-    private int sceneWidth = 800;
-    private int sceneHeight = 800;
-    private int foorWidth = 200;
+    private int sceneSize = 300;
+    private int foorWidth = sceneSize / 4;
     private Circle punane;
     private Circle kollane;
     private Circle roheline;
     private Color[] varvid = {Color.GRAY, Color.RED, Color.YELLOW, Color.SPRINGGREEN};
-    private ArrayList<Integer> pausid = new ArrayList();
-    private int pausideJarg = 0;
-    private int pausideArv;
+    public ArrayList<Integer> pausid = new ArrayList();
+    public int pausideJarg = 0;
+    public int fooriMuutumisi = 0;
 
 
     public Foor() {
@@ -55,14 +54,15 @@ public class Foor {
     }
 
     private void muudaVarvi(Circle tuli, Color varv) {
-        pausideArv++;
+        fooriMuutumisi++;
 
-        // Iga muutuse kohta peab olema paus, kasvõi null sekundit kestev
-        if (pausid.size() < pausideArv) {
-            paus(0);
+        // Iga muutuse kohta peab olema paus, et loend oleks õige.
+        // 0 toob mingi bugi sisse, kus tuled vahel ei reageeri
+        if (pausid.size() < fooriMuutumisi) {
+            paus(0.01);
         }
 
-        // Võta timeout ja arvuta järgmine
+        // Leia timeout
         int timeout = 0;
         for (int i = 0; i <= pausideJarg; i++) {
             timeout += pausid.get(i);
@@ -92,21 +92,25 @@ public class Foor {
     private void joonistaFoorSuunaga(String suund) {
         int x = 0;
         int y = 0;
+        int rotate = 0;
 
         if (!suund.isEmpty()) {
-            foorWidth = foorWidth / 3;
+            sceneSize = sceneSize / 3;
             switch (suund) {
-                case "vasak":
-                    x = -300;
+                case "vasakul":
+                    x = -sceneSize;
+                    rotate = 90;
                     break;
-                case "parem":
-                    x = 300;
+                case "paremal":
+                    x = sceneSize;
+                    rotate = -90;
                     break;
                 case "üleval":
-                    y = -300;
+                    y = -sceneSize;
+                    rotate = 180;
                     break;
                 case "all":
-                    y = 300;
+                    y = sceneSize;
                     break;
             }
         }
@@ -116,57 +120,74 @@ public class Foor {
         kast.setWidth(foorWidth);
         kast.setHeight(foorWidth * 3);
         kast.setFill(Color.DIMGRAY);
-        kast.setTranslateX(x);
-        kast.setTranslateY(y);
 
         // Punane
         punane = new Circle();
         punane.setFill(varvid[0]);
         punane.setRadius(foorWidth / 2.5);
-        punane.setTranslateX(x);
-        punane.setTranslateY(-foorWidth + y);
+        punane.setTranslateY(-foorWidth);
+        punane.setId(suund);
 
         // Kollane
         kollane = new Circle();
         kollane.setFill(varvid[0]);
         kollane.setRadius(foorWidth / 2.5);
-        kollane.setTranslateX(x);
-        kollane.setTranslateY(y);
+        kollane.setId(suund);
 
         // Roheline
         roheline = new Circle();
         roheline.setFill(varvid[0]);
         roheline.setRadius(foorWidth / 2.5);
-        roheline.setTranslateX(x);
-        roheline.setTranslateY(foorWidth + y);
+        roheline.setTranslateY(foorWidth);
+        roheline.setId(suund);
 
         // Lisa elemendid StackPane sisse
         stack.getChildren().addAll(kast, punane, kollane, roheline);
+
+        // Ja liiguta StackPane paika
+        stack.setTranslateX(x);
+        stack.setTranslateY(y);
+        stack.setScaleX(0.3);
+        stack.setScaleY(0.3);
+        stack.setRotate(rotate);
     }
 
     private void setupStage() {
         stage = new Stage();
         stack = new StackPane();
-        scene = new Scene(stack, sceneWidth, sceneHeight);
+        scene = new Scene(stack, sceneSize, sceneSize);
         stage.setScene(scene);
         stage.show();
     }
 
     private void setupStage(Stage stage) {
+        StackPane rootStack;
 
         if (stage.getScene() == null) {
-            stack = new StackPane();
-            stack.setId("stack");
-            scene = new Scene(stack, sceneWidth, sceneHeight);
+            rootStack = new StackPane();
+            rootStack.setId("root");
+            scene = new Scene(rootStack, sceneSize, sceneSize);
             stage.setScene(scene);
             stage.show();
         } else {
             scene = stage.getScene();
-            stack = (StackPane) scene.lookup("#stack");
+            rootStack = (StackPane) scene.lookup("#root");
         }
+        stack = new StackPane();
+        rootStack.getChildren().add(stack);
     }
 
-    public void paus(double i) {
-        pausid.add((int)(i*1000));
+    public void paus(double sek) {
+        int pausideKogus = pausid.size();
+        int pausiKestvus = (int) (sek * 1000);
+
+        // Kui kasutatakse kahte pausi järjest (fooruMuutust vahepeal ei ole),
+        // siis kirjuta viimane kestvus üle, mitte ei lisa uut.
+        if (fooriMuutumisi < pausideKogus) {
+            pausiKestvus += pausid.get(pausideKogus - 1);
+            pausid.set(pausideKogus - 1, pausiKestvus);
+        } else {
+            pausid.add(pausiKestvus);
+        }
     }
 }
