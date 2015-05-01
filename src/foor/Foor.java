@@ -1,4 +1,4 @@
-package Foor;
+package foor;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;

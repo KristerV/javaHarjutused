@@ -1,4 +1,4 @@
-package Foor;
+package foor;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
