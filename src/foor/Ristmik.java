@@ -16,12 +16,6 @@ public class Ristmik extends Application {
         Foor foor3 = new Foor("paremal", primaryStage);
         Foor foor4 = new Foor("vasakul", primaryStage);
 
-        foor.kollane();
-        foor1.punane();
-        foor2.punane();
-        foor3.roheline();
-        foor4.roheline();
-
         for (int i = 0; i < 5; i++) {
             foor.paus(0.8);
             foor.kollane();

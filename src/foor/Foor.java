@@ -15,7 +15,7 @@ public class Foor {
     private StackPane stack;
     private Scene scene;
     private Stage stage;
-    private int sceneSize = 300;
+    private int sceneSize = 700;
     private int foorWidth = sceneSize / 4;
     private Circle punane;
     private Circle kollane;
