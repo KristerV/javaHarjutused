@@ -160,6 +160,9 @@ public class Foor {
         scene = new Scene(stack, sceneSize, sceneSize);
         stage.setScene(scene);
         stage.show();
+        stage.setOnCloseRequest(
+                event -> System.exit(0)
+        );
     }
 
     private void setupStage(Stage stage) {
@@ -177,6 +180,10 @@ public class Foor {
         }
         stack = new StackPane();
         rootStack.getChildren().add(stack);
+
+        stage.setOnCloseRequest(
+                event -> System.exit(0)
+        );
     }
 
     public void paus(double sek) {
