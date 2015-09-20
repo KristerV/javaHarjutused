@@ -21,6 +21,7 @@ public class Foor {
     private Circle kollane;
     private Circle roheline;
     private Color[] varvid = {Color.GRAY, Color.RED, Color.YELLOW, Color.SPRINGGREEN};
+    private String suund;
     public ArrayList<Integer> pausid = new ArrayList<Integer>();
     public int pausideJarg = 0;
     public int fooriMuutumisi = 0;
@@ -36,8 +37,9 @@ public class Foor {
         joonistaFoorSuunaga(suund);
     }
 
-    public Foor(String suund, Stage primaryStage) {
+    public Foor(String suundSisse, Stage primaryStage) {
         setupStage(primaryStage);
+        suund = suundSisse;
         joonistaFoorSuunaga(suund);
     }
 
@@ -55,6 +57,8 @@ public class Foor {
 
     private void muudaVarvi(Circle tuli, Color varv) {
         fooriMuutumisi++;
+        System.out.println("suund:" + suund);
+        System.out.println("värv:" + varv);
 
         // Iga muutuse kohta peab olema paus, et loend oleks õige.
         // 0 toob mingi bugi sisse, kus tuled vahel ei reageeri
@@ -74,6 +78,8 @@ public class Foor {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                System.out.println("suund:" + suund);
+                System.out.println("värv:" + varv);
                 Color tuleVarv = (Color) tuli.getFill();
                 boolean p6leb = tuleVarv.equals(varv);
                 if (p6leb) {
