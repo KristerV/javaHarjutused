@@ -21,7 +21,7 @@ public class Foor {
     private Circle kollane;
     private Circle roheline;
     private Color[] varvid = {Color.GRAY, Color.RED, Color.YELLOW, Color.SPRINGGREEN};
-    public ArrayList<Integer> pausid = new ArrayList();
+    public ArrayList<Integer> pausid = new ArrayList<Integer>();
     public int pausideJarg = 0;
     public int fooriMuutumisi = 0;
 
