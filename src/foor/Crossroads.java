@@ -23,6 +23,7 @@ public class Crossroads extends Application {
     private void animGroupA(TrafficLight light) {
         greenIdle(light);
         greenToRed(light);
+
         redIdle(light);
         redToGreen(light);
 
@@ -31,23 +32,21 @@ public class Crossroads extends Application {
     private void animGroupB(TrafficLight light) {
         redIdle(light);
         redToGreen(light);
+
         greenIdle(light);
         greenToRed(light);
 
         light.playAnimation();
     }
 
-    void greenIdle(TrafficLight light){
+    // 7s
+    private void greenIdle(TrafficLight light){
         light.setGreen();
         light.addPause(7.0);
     }
 
-    void redIdle(TrafficLight light){
-        light.setRed();
-        light.addPause(12.0);
-    }
-
-    void greenToRed(TrafficLight light) {
+    // 4s
+    private void greenToRed(TrafficLight light) {
         for (int i = 0; i < 6; ++i) {
             light.toggleGreen();
             light.addPause(0.5);
@@ -59,11 +58,14 @@ public class Crossroads extends Application {
         light.toggleYellow();
     }
 
-    void redToGreen(TrafficLight light) {
-        for (int i = 0; i < 10; ++i) {
-            light.toggleRed();
-            light.addPause(0.5);
-        }
+    // 10s
+    private void redIdle(TrafficLight light){
+        light.setRed();
+        light.addPause(10.0);
+    }
+
+    // 1s
+    private void redToGreen(TrafficLight light) {
         light.toggleYellow();
         light.addPause(1.0);
 

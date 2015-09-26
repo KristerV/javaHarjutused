@@ -140,8 +140,10 @@ public class TrafficLight {
     public void playAnimation() {
         if (AnimRunning) return;
         AnimRunning = true;
-        AnimThread = new Thread(()->{
-            while (AnimRunning) for (Command cmd : Commands) {
+        AnimThread = new Thread(()->
+        {
+            while (AnimRunning) for (Command cmd : Commands)
+            {
                 if (!AnimRunning) return; // exit thread
                 try {
                     switch (cmd.Evt) {

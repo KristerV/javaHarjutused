@@ -3,17 +3,15 @@ package foor;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Test extends Application {
+public class YellowBlinker extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception
     {
         TrafficLight light1 = new TrafficLight(TrafficLight.UP, primaryStage);
 
-        light1.setGreen();
-        light1.addPause(1.0);
-        light1.unsetGreen();
-
+        light1.toggleYellow();
+        light1.addPause(0.75);
         light1.playAnimation();
     }
 }
