@@ -14,68 +14,70 @@ public class Crossroads extends Application {
         TrafficLight light3 = new TrafficLight(TrafficLight.RIGHT, primaryStage);
         TrafficLight light4 = new TrafficLight(TrafficLight.LEFT, primaryStage);
 
-        light1.runAnimations(()-> loopGroupA(light1));
-        light2.runAnimations(()-> loopGroupA(light2));
-        light3.runAnimations(()-> loopGroupB(light3));
-        light4.runAnimations(()-> loopGroupB(light4));
-    }
+        animGroupA(light1);
+        animGroupA(light2);
+        animGroupB(light3);
+        animGroupB(light4);
 
-    private void loopGroupA(TrafficLight light) {
-        while (true) {
-            greenIdle.playAnim(light);
-            greenToRed.playAnim(light);
-            redIdle.playAnim(light);
-            redToGreen.playAnim(light);
-        }
-    }
-    private void loopGroupB(TrafficLight light) {
-        while (true) {
-            redIdle.playAnim(light);
-            redToGreen.playAnim(light);
-            greenIdle.playAnim(light);
-            greenToRed.playAnim(light);
-        }
-    }
 
-    private LightAnim greenIdle = new LightAnim("greenIdle") {
-        public void createAnim() {
-            setGreen();
-            addPause(7.0);
-        }
-    };
-
-    private LightAnim redIdle = new LightAnim("redIdle") {
-        public void createAnim() {
-            setRed();
-            addPause(12.0);
-        }
-    };
-
-    private LightAnim greenToRed = new LightAnim("greenToRed") {
-        public void createAnim() {
-            for (int i = 0; i < 6; ++i) {
-                toggleGreen();
-                addPause(0.5);
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                light1.stopAnimation();
+                light2.stopAnimation();
+                light3.stopAnimation();
+                light4.stopAnimation();
             }
-            toggleGreen();
+        }, 2000);
+    }
 
-            toggleYellow();
-            addPause(1.0);
-            toggleYellow();
+    private void animGroupA(TrafficLight light) {
+        greenIdle(light);
+        greenToRed(light);
+        redIdle(light);
+        redToGreen(light);
+
+        light.playAnimation();
+    }
+    private void animGroupB(TrafficLight light) {
+        redIdle(light);
+        redToGreen(light);
+        greenIdle(light);
+        greenToRed(light);
+
+        light.playAnimation();
+    }
+
+    void greenIdle(TrafficLight light){
+        light.setGreen();
+        light.addPause(7.0);
+    }
+
+    void redIdle(TrafficLight light){
+        light.setRed();
+        light.addPause(12.0);
+    }
+
+    void greenToRed(TrafficLight light) {
+        for (int i = 0; i < 6; ++i) {
+            light.toggleGreen();
+            light.addPause(0.5);
         }
-    };
+        light.toggleGreen();
 
-    private LightAnim redToGreen = new LightAnim("redToGreen") {
-        public void createAnim() {
-            for (int i = 0; i < 10; ++i) {
-                toggleRed();
-                addPause(0.5);
-            }
-            toggleYellow();
-            addPause(1.0);
+        light.toggleYellow();
+        light.addPause(1.0);
+        light.toggleYellow();
+    }
 
-            toggleRed();
-            toggleYellow();
+    void redToGreen(TrafficLight light) {
+        for (int i = 0; i < 10; ++i) {
+            light.toggleRed();
+            light.addPause(0.5);
         }
-    };
+        light.toggleYellow();
+        light.addPause(1.0);
+
+        light.toggleRed();
+        light.toggleYellow();
+    }
 }

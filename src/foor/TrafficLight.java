@@ -9,10 +9,11 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TrafficLight implements LightAnim.IAnimPlayable {
+public class TrafficLight {
 
     //// constant definitions
 
@@ -57,17 +58,60 @@ public class TrafficLight implements LightAnim.IAnimPlayable {
         drawLight(direction);
     }
 
-    //// direct manip
-
-    public void toggleRed()    { toggleLight(LightColour.RED);    }
-    public void toggleYellow() { toggleLight(LightColour.YELLOW); }
-    public void toggleGreen()  { toggleLight(LightColour.GREEN);  }
-    public void setRed()    { setLight(LightColour.RED, true);    }
-    public void setYellow() { setLight(LightColour.YELLOW, true); }
-    public void setGreen()  { setLight(LightColour.GREEN, true);  }
-
-
     //// event based manipulation
+
+    public enum Event {
+        SET    /* set light status on */,
+        UNSET  /* set light status off */,
+        TOGGLE /* toggle light status (on/off)*/,
+        PAUSE  /* add animation delay on timeline */,
+    }
+
+    private class Command {
+        public Event Evt;
+        public Object Value;
+        public double Time;  // this is just for more timeline info, not actually required for anything
+        public Command(Event evt, Object value, double time) {
+            Evt = evt;
+            Value = value;
+            Time = time;
+        }
+    }
+
+    //// animation related stuff
+
+    private ArrayList<Command> Commands = new ArrayList<Command>();
+    private double AnimTime = 0.0;
+    private Thread AnimThread;
+    private volatile boolean AnimRunning = false;
+
+    public double getAnimTime() {
+        return AnimTime;
+    }
+    private void addCmd(Event evt, Object value) {
+        Commands.add(new Command(evt, value, AnimTime));
+    }
+
+    public void setRed()    { addCmd(Event.SET, TrafficLight.RED);    }
+    public void setYellow() { addCmd(Event.SET, TrafficLight.YELLOW); }
+    public void setGreen()  { addCmd(Event.SET, TrafficLight.GREEN);  }
+
+    public void unsetRed()    { addCmd(Event.UNSET, TrafficLight.RED);    }
+    public void unsetYellow() { addCmd(Event.UNSET, TrafficLight.YELLOW); }
+    public void unsetGreen()  { addCmd(Event.UNSET, TrafficLight.GREEN);  }
+
+    public void toggleRed()    { addCmd(Event.TOGGLE, TrafficLight.RED);    }
+    public void toggleYellow() { addCmd(Event.TOGGLE, TrafficLight.YELLOW); }
+    public void toggleGreen()  { addCmd(Event.TOGGLE, TrafficLight.GREEN);  }
+
+    public void addPause(double pause) {
+        if (pause > 0.0) {
+            addCmd(Event.PAUSE, pause);
+            AnimTime += pause;
+        }
+    }
+
+    //// internal manip
 
     private void toggleLight(LightColour lightId) { setLight(lightId, !isActive(lightId)); }
 
@@ -83,23 +127,52 @@ public class TrafficLight implements LightAnim.IAnimPlayable {
         Platform.runLater(()-> light.setFill(Colors[isActive ? index : GRAY.ordinal()]));
 
         // "UP::YELLOW switched on"
-        System.out.printf("%s::%s switched %s\n", Dir, lightId, isActive ? "off" : "on");
+        System.out.printf("%5s::%-6s switched %s\n", Dir, lightId, isActive ? "on" : "off");
     }
 
-    @Override
-    public void animEvent(LightAnim.Event evt, Object value, double time) throws InterruptedException {
-        switch (evt) {
-            case SET:    setLight((TrafficLight.LightColour)value, true);   break;
-            case UNSET:  setLight((TrafficLight.LightColour)value, false);  break;
-            case TOGGLE: toggleLight((TrafficLight.LightColour)value);      break;
-            case PAUSE:  Thread.sleep((int)((Double)value * 1000));         break; /* @todo Replace Thread.sleep */
+
+    //// Animation playing and stopping
+
+    public boolean isAnimationPlaying() {
+        return AnimRunning;
+    }
+
+    public void playAnimation() {
+        if (AnimRunning) return;
+        AnimRunning = true;
+        AnimThread = new Thread(()->{
+            while (AnimRunning) for (Command cmd : Commands) {
+                if (!AnimRunning) return; // exit thread
+                try {
+                    switch (cmd.Evt) {
+                        case SET:    setLight((LightColour)cmd.Value, true);   break;
+                        case UNSET:  setLight((LightColour)cmd.Value, false);  break;
+                        case TOGGLE: toggleLight((LightColour)cmd.Value);      break;
+                        case PAUSE:  Thread.sleep((int)((Double)cmd.Value * 1000));         break; /* @todo Replace Thread.sleep */
+                    }
+                }
+                catch (InterruptedException ex) {
+                    System.err.printf("runAnimation() %s(%s) interrupted\n", cmd.Evt, cmd.Value);
+                }
+            }
+        });
+        AnimThread.start();
+    }
+
+    public void stopAnimation() {
+        if (AnimRunning) {
+            AnimRunning = false;
+            try {
+                AnimThread.join(500);
+            } catch (InterruptedException e) {
+                System.err.println("AnimThread.join() failed. Animation was not properly stopped.\n");
+                e.printStackTrace();
+            }
         }
+        setLight(LightColour.RED,    false);
+        setLight(LightColour.YELLOW, false);
+        setLight(LightColour.GREEN,  false);
     }
-
-    public void runAnimations(Runnable runnable) {
-        new Thread(runnable).start();
-    }
-
 
     //// TrafficLight graphics setup
 
@@ -128,9 +201,9 @@ public class TrafficLight implements LightAnim.IAnimPlayable {
         rect.setFill(Color.DIMGRAY);
 
         Stack.getChildren().addAll(rect,
-                initCircle(RED, "red", -LightWidth),
+                initCircle(RED,    "red",    -LightWidth),
                 initCircle(YELLOW, "yellow", 0),
-                initCircle(GREEN, "green", LightWidth));
+                initCircle(GREEN,  "green",  LightWidth));
 
         Stack.setTranslateX(x);
         Stack.setTranslateY(y);
