@@ -18,16 +18,6 @@ public class Crossroads extends Application {
         animGroupA(light2);
         animGroupB(light3);
         animGroupB(light4);
-
-
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                light1.stopAnimation();
-                light2.stopAnimation();
-                light3.stopAnimation();
-                light4.stopAnimation();
-            }
-        }, 2000);
     }
 
     private void animGroupA(TrafficLight light) {

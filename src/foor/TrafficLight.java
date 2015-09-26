@@ -148,7 +148,9 @@ public class TrafficLight {
                         case SET:    setLight((LightColour)cmd.Value, true);   break;
                         case UNSET:  setLight((LightColour)cmd.Value, false);  break;
                         case TOGGLE: toggleLight((LightColour)cmd.Value);      break;
-                        case PAUSE:  Thread.sleep((int)((Double)cmd.Value * 1000));         break; /* @todo Replace Thread.sleep */
+                        case PAUSE:
+                            Thread.sleep((int)((Double)cmd.Value * 1000));
+                            break; /* @todo Replace Thread.sleep */
                     }
                 }
                 catch (InterruptedException ex) {
@@ -160,18 +162,10 @@ public class TrafficLight {
     }
 
     public void stopAnimation() {
-        if (AnimRunning) {
-            AnimRunning = false;
-            try {
-                AnimThread.join(500);
-            } catch (InterruptedException e) {
-                System.err.println("AnimThread.join() failed. Animation was not properly stopped.\n");
-                e.printStackTrace();
-            }
-        }
-        setLight(LightColour.RED,    false);
-        setLight(LightColour.YELLOW, false);
-        setLight(LightColour.GREEN,  false);
+        if (AnimRunning) AnimRunning = false;
+        if (isActive(LightColour.RED))    setLight(LightColour.RED,    false);
+        if (isActive(LightColour.YELLOW)) setLight(LightColour.YELLOW, false);
+        if (isActive(LightColour.GREEN))  setLight(LightColour.GREEN,  false);
     }
 
     //// TrafficLight graphics setup
