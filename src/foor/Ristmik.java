@@ -19,7 +19,7 @@ public class Ristmik extends YksikFoor {
 
     private void gruppVertikaalne(ValgusFoor foor) {
         rohelineKestab(foor);
-        rohlinePunaseks(foor);
+        rohelinePunaseks(foor);
 
         punaneKestab(foor);
         punaneRoheliseks(foor);
@@ -29,6 +29,6 @@ public class Ristmik extends YksikFoor {
         punaneRoheliseks(foor);
 
         rohelineKestab(foor);
-        rohlinePunaseks(foor);
+        rohelinePunaseks(foor);
     }
 }

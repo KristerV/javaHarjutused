@@ -11,8 +11,7 @@ public class YksikFoor extends Application {
         ValgusFoor foor = new ValgusFoor(ValgusFoor.YLEMINE, primaryStage);
 
         rohelineKestab(foor);
-        rohlinePunaseks(foor);
-
+        rohelinePunaseks(foor);
         punaneKestab(foor);
         punaneRoheliseks(foor);
     }
@@ -24,16 +23,20 @@ public class YksikFoor extends Application {
     }
 
     // 4s
-    public static void rohlinePunaseks(ValgusFoor foor) {
-        for (int i = 0; i < 6; ++i) {
+    public static void rohelinePunaseks(ValgusFoor foor) {
+        foor.syytaRoheline();
+
+        // blink 6x => 3s
+        // off on off on off on
+        for (int i = 0; i < 6; i++) {
             foor.vahetaRohelist();
             foor.paus(0.5);
         }
-        foor.vahetaRohelist();
+        foor.kustutaRoheline();
 
-        foor.vahetaKollast();
+        foor.syytaKollane();
         foor.paus(1.0);
-        foor.vahetaKollast();
+        foor.kustutaKollane();
     }
 
     // 10s
@@ -44,10 +47,11 @@ public class YksikFoor extends Application {
 
     // 1s
     public static void punaneRoheliseks(ValgusFoor foor) {
-        foor.vahetaKollast();
+        foor.syytaPunane();
+        foor.syytaKollane();
         foor.paus(1.0);
 
-        foor.vahetaPunast();
-        foor.vahetaKollast();
+        foor.kustutaPunane();
+        foor.kustutaKollane();
     }
 }
