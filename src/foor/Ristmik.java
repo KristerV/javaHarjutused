@@ -1,76 +1,34 @@
 package foor;
 
-import javafx.application.Application;
 import javafx.stage.Stage;
 
-/**
- * Created by krister on 4/30/15.
- */
-public class Ristmik extends Application {
+public class Ristmik extends YksikFoor {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Foor foor1 = new Foor("üleval", primaryStage);
-        Foor foor2 = new Foor("all", primaryStage);
-        Foor foor3 = new Foor("paremal", primaryStage);
-        Foor foor4 = new Foor("vasakul", primaryStage);
+        ValgusFoor foor1 = new ValgusFoor(ValgusFoor.YLEMINE, primaryStage);
+        ValgusFoor foor2 = new ValgusFoor(ValgusFoor.ALUMINE, primaryStage);
+        ValgusFoor foor3 = new ValgusFoor(ValgusFoor.PAREM, primaryStage);
+        ValgusFoor foor4 = new ValgusFoor(ValgusFoor.VASAK, primaryStage);
 
-        foor1.punane();
-        foor2.punane();
-        foor3.roheline();
-        foor4.roheline();
-
-        for (int i = 0; i < 5; i++) {
-
-            foor1.paus(11);
-            punasestRoheliseks(foor1);
-            foor1.paus(5);
-            rohelisestPunaseks(foor1);
-            foor1.paus(3);
-
-            foor2.paus(11);
-            punasestRoheliseks(foor2);
-            foor2.paus(5);
-            rohelisestPunaseks(foor2);
-            foor2.paus(3);
-
-            foor3.paus(5);
-            rohelisestPunaseks(foor3);
-            foor3.paus(14);
-            punasestRoheliseks(foor3);
-
-            foor4.paus(5);
-            rohelisestPunaseks(foor4);
-            foor4.paus(14);
-            punasestRoheliseks(foor4);
-        }
+        gruppVertikaalne(foor1);
+        gruppVertikaalne(foor2);
+        gruppHorisontaalne(foor3);
+        gruppHorisontaalne(foor4);
     }
 
-    private void rohelisestPunaseks(Foor foor) {
-        foor.roheline();
-        foor.paus(0.5);
-        foor.roheline();
-        foor.paus(0.5);
-        foor.roheline();
-        foor.paus(0.5);
-        foor.roheline();
-        foor.paus(0.5);
-        foor.roheline();
-        foor.paus(0.5);
-        foor.roheline();
-        foor.paus(0.5);
-        foor.roheline();
-        foor.kollane();
-        foor.paus(1);
-        foor.kollane();
-        foor.punane();
-    }
+    private void gruppVertikaalne(ValgusFoor foor) {
+        rohelineKestab(foor);
+        rohelinePunaseks(foor);
 
-    private void punasestRoheliseks(Foor foor) {
-        foor.kollane();
-        foor.paus(1);
-        foor.punane();
-        foor.kollane();
-        foor.roheline();
+        punaneKestab(foor);
+        punaneRoheliseks(foor);
+    }
+    private void gruppHorisontaalne(ValgusFoor foor) {
+        punaneKestab(foor);
+        punaneRoheliseks(foor);
+
+        rohelineKestab(foor);
+        rohelinePunaseks(foor);
     }
 }
