@@ -5,12 +5,18 @@ import javafx.stage.Stage;
 
 public class KollaneVilkuja extends Application {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception
-    {
-        ValgusFoor foor = new ValgusFoor(ValgusFoor.YLEMINE, primaryStage);
-
+    public void start(Stage primaryStage) throws Exception {
+        Foor foor = new Foor();
         foor.vahetaKollast();
-        foor.paus(0.75);
+        foor.paus(0.5);
+        foor.vahetaKollast();
+        foor.paus(0.5);
+        foor.vahetaKollast();
+        foor.paus(0.5);
+        foor.vahetaKollast();
+        foor.paus(0.5);
+        foor.vahetaKollast();
+        foor.paus(0.5);
     }
+
 }

@@ -9,30 +9,29 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import javax.sound.midi.MidiDevice;
-import java.text.Format;
 import java.util.ArrayList;
 
-public class ValgusFoor {
+public class Foor {
 
     //// constant definitions
 
-    public static final ValgusV2rv HALL     = ValgusV2rv.HALL;
-    public static final ValgusV2rv PUNANE   = ValgusV2rv.PUNANE;
-    public static final ValgusV2rv KOLLANE  = ValgusV2rv.KOLLANE;
-    public static final ValgusV2rv ROHELINE = ValgusV2rv.ROHELINE;
+    private static final ValgusV2rv HALL     = ValgusV2rv.HALL;
+    private static final ValgusV2rv PUNANE   = ValgusV2rv.PUNANE;
+    private static final ValgusV2rv KOLLANE  = ValgusV2rv.KOLLANE;
+    private static final ValgusV2rv ROHELINE = ValgusV2rv.ROHELINE;
 
     public static final FooriSuund YLEMINE = FooriSuund.YLEMINE;
     public static final FooriSuund ALUMINE = FooriSuund.ALUMINE;
     public static final FooriSuund VASAK   = FooriSuund.VASAK;
     public static final FooriSuund PAREM   = FooriSuund.PAREM;
+    public static final FooriSuund DEFAULT   = FooriSuund.DEFAULT;
 
-    public enum FooriSuund { YLEMINE, ALUMINE, VASAK,   PAREM    }
+    public enum FooriSuund { YLEMINE, ALUMINE, VASAK, PAREM, DEFAULT }
     public enum ValgusV2rv { HALL,    PUNANE,  KOLLANE, ROHELINE }
 
     //// events and commands
 
-    public enum FooriSyndmus {
+    private enum FooriSyndmus {
         SYYTA,    /* set light status on */
         KUSTUTA,  /* set light status off */
         VAHETA,   /* toggle light status (on/off) */
@@ -59,7 +58,7 @@ public class ValgusFoor {
 
     private int StseeniSuurus = 700;
     private int ValguseLaius  = StseeniSuurus / 4;
-	private FooriSuund Suund  = YLEMINE;
+	private FooriSuund Suund  = DEFAULT;
     private Color[]  V2rvid   = { Color.GRAY, Color.RED,    Color.YELLOW, Color.SPRINGGREEN };
     private Circle[] Tuled    = { null,       new Circle(), new Circle(), new Circle()      };
 	private Label    InfoTekst= new Label();
@@ -70,17 +69,16 @@ public class ValgusFoor {
     private volatile boolean     AnimJookseb = false;
 
 
-    public ValgusFoor() {
+    public Foor() {
         setupStage();
-        drawLight(YLEMINE);
+        drawLight(FooriSuund.DEFAULT);
     }
 
-    public ValgusFoor(FooriSuund fooriSuund) {
-        setupStage();
-        drawLight(fooriSuund);
+    public Foor(FooriSuund fooriSuund) {
+        System.err.printf("Palun anna teise argumendina kaasa primaryStage.\n");
     }
 
-    public ValgusFoor(FooriSuund fooriSuund, Stage primaryStage) {
+    public Foor(FooriSuund fooriSuund, Stage primaryStage) {
         setupStage(primaryStage);
         drawLight(fooriSuund);
     }
@@ -92,17 +90,17 @@ public class ValgusFoor {
         Syndmused.add(new FooriK2sk(evt, value, AnimKestus /* current time on anim */));
     }
 
-    public void syytaPunane()     { lisaK2sk(FooriSyndmus.SYYTA, ValgusFoor.PUNANE);    }
-    public void syytaKollane()    { lisaK2sk(FooriSyndmus.SYYTA, ValgusFoor.KOLLANE);   }
-    public void syytaRoheline()   { lisaK2sk(FooriSyndmus.SYYTA, ValgusFoor.ROHELINE);  }
+    public void syytaPunane()     { lisaK2sk(FooriSyndmus.SYYTA, Foor.PUNANE);    }
+    public void syytaKollane()    { lisaK2sk(FooriSyndmus.SYYTA, Foor.KOLLANE);   }
+    public void syytaRoheline()   { lisaK2sk(FooriSyndmus.SYYTA, Foor.ROHELINE);  }
 
-    public void kustutaPunane()   { lisaK2sk(FooriSyndmus.KUSTUTA, ValgusFoor.PUNANE);  }
-    public void kustutaKollane()  { lisaK2sk(FooriSyndmus.KUSTUTA, ValgusFoor.KOLLANE); }
-    public void kustutaRoheline() { lisaK2sk(FooriSyndmus.KUSTUTA, ValgusFoor.ROHELINE);}
+    public void kustutaPunane()   { lisaK2sk(FooriSyndmus.KUSTUTA, Foor.PUNANE);  }
+    public void kustutaKollane()  { lisaK2sk(FooriSyndmus.KUSTUTA, Foor.KOLLANE); }
+    public void kustutaRoheline() { lisaK2sk(FooriSyndmus.KUSTUTA, Foor.ROHELINE);}
 
-    public void vahetaPunast()    { lisaK2sk(FooriSyndmus.VAHETA, ValgusFoor.PUNANE);   }
-    public void vahetaKollast()   { lisaK2sk(FooriSyndmus.VAHETA, ValgusFoor.KOLLANE);  }
-    public void vahetaRohelist()  { lisaK2sk(FooriSyndmus.VAHETA, ValgusFoor.ROHELINE); }
+    public void vahetaPunast()    { lisaK2sk(FooriSyndmus.VAHETA, Foor.PUNANE);   }
+    public void vahetaKollast()   { lisaK2sk(FooriSyndmus.VAHETA, Foor.KOLLANE);  }
+    public void vahetaRohelist()  { lisaK2sk(FooriSyndmus.VAHETA, Foor.ROHELINE); }
 
     public void paus(double pausSekundites) {
         if (pausSekundites > 0.0) {
@@ -131,7 +129,7 @@ public class ValgusFoor {
         Platform.runLater(()-> tuli.setFill(V2rvid[onSees ? indeks : HALL.ordinal()]));
 
         // "YLEMINE::KOLLANE switched on"
-        System.out.printf("%7s::%-8s %s\n", Suund, v2rv, onSees ? "on" : "off");
+        // System.out.printf("%7s::%-8s %s\n", Suund, v2rv, onSees ? "on" : "off");
     }
 
 	private void muudaInfot(String infoTekst) {
@@ -141,23 +139,23 @@ public class ValgusFoor {
 
     //// Animation playing and stopping
 
-    public boolean animatsioonJookseb() {
+    private boolean animatsioonJookseb() {
         return AnimJookseb;
     }
 
-    public void kustutaAnimatsioon() {
+    private void kustutaAnimatsioon() {
         peataAnimatsioon();
         Syndmused.clear();
     }
 
-    public void peataAnimatsioon() {
+    private void peataAnimatsioon() {
         if (AnimJookseb) AnimJookseb = false;
         if (onTuliSees(ValgusV2rv.PUNANE))    muudaTuld(ValgusV2rv.PUNANE, false);
         if (onTuliSees(ValgusV2rv.KOLLANE))   muudaTuld(ValgusV2rv.KOLLANE, false);
         if (onTuliSees(ValgusV2rv.ROHELINE))  muudaTuld(ValgusV2rv.ROHELINE, false);
     }
 
-    public void alustaAnimatsiooni() {
+    private void alustaAnimatsiooni() {
         if (AnimJookseb)
             return;
 
@@ -170,6 +168,7 @@ public class ValgusFoor {
                         return; // exit thread
                     animatsiooniK2sk(Syndmused.get(i));
                 }
+                return; // infinite loop disabled
             }
         });
         AnimThread.start();
@@ -206,7 +205,7 @@ public class ValgusFoor {
         }
     }
 
-    //// ValgusFoor graphics setup
+    //// Foor graphics setup
 
     private Circle tekitaTuli(ValgusV2rv v2rv, String id, int yAsukoht) {
         Circle c = Tuled[v2rv.ordinal()];
@@ -221,35 +220,37 @@ public class ValgusFoor {
         int lightSize = StseeniSuurus / 3;
         double skaala = 0.3;
 
-        Suund = fooriSuund;
-        int suund  = fooriSuund.ordinal();
-        int orient  = new int[]{ 180,     0,     90,     -90 }[suund];
-		int torient = new int[]{ 180,     0,    -90,     +90 }[suund];
-        int x       = new int[]{ 0, 0, -lightSize, lightSize }[suund];
-        int y       = new int[]{ -lightSize, lightSize, 0, 0 }[suund];
+        InfoTekst.setText("Foor");
+        InfoTekst.setScaleX(4.0);
+        InfoTekst.setScaleY(4.0);
+        InfoTekst.setTranslateX(-ValguseLaius - 40);
+
+        if (fooriSuund != FooriSuund.DEFAULT) {
+            Suund = fooriSuund;
+            int suund  = fooriSuund.ordinal();
+            int orient  = new int[]{ 180,     0,     90,     -90 }[suund];
+            int torient = new int[]{ 180,     0,    -90,     +90 }[suund];
+            int x       = new int[]{ 0, 0, -lightSize, lightSize }[suund];
+            int y       = new int[]{ -lightSize, lightSize, 0, 0 }[suund];
+
+            Stack.setTranslateX(x);
+            Stack.setTranslateY(y);
+            Stack.setScaleX(skaala);
+            Stack.setScaleY(skaala);
+            Stack.setRotate(orient);
+
+            InfoTekst.setRotate(torient);
+        }
 
         Rectangle kast = new Rectangle();
         kast.setWidth(ValguseLaius);
         kast.setHeight(ValguseLaius * 3);
         kast.setFill(Color.DIMGRAY);
 
-		InfoTekst.setText("Foor");
-		InfoTekst.setScaleX(4.0);
-		InfoTekst.setScaleY(4.0);
-		InfoTekst.setTranslateX(-ValguseLaius - 40);
-		InfoTekst.setRotate(torient);
-
         Stack.getChildren().addAll(kast,
                 tekitaTuli(PUNANE, "punane", -ValguseLaius),
                 tekitaTuli(KOLLANE, "kollane", 0),
-                tekitaTuli(ROHELINE, "roheline", ValguseLaius),
-				InfoTekst);
-
-        Stack.setTranslateX(x);
-        Stack.setTranslateY(y);
-        Stack.setScaleX(skaala);
-        Stack.setScaleY(skaala);
-        Stack.setRotate(orient);
+                tekitaTuli(ROHELINE, "roheline", ValguseLaius));
     }
 
     private void setupStage() {

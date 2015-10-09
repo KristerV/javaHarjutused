@@ -19,17 +19,17 @@ public class Ristmik extends Application {
 
 Programmeerida saab järgmiste vahenditega:
 ```
-foor.punane();   // pane punane   tuli põlema, või kui juba põleb kustuta ära.
-foor.kollane();  // pane kollane  tuli põlema, või kui juba põleb kustuta ära.
-foor.roheline(); // pane roheline tuli põlema, või kui juba põleb kustuta ära.
+foor.vahetaPunast();   // pane punane   tuli põlema, või kui juba põleb kustuta ära.
+foor.vahetaKollast();  // pane kollane  tuli põlema, või kui juba põleb kustuta ära.
+foor.vahetaRohelist(); // pane roheline tuli põlema, või kui juba põleb kustuta ära.
 foor.paus(sek);  // jäta mis iganes värv praegu ees on põlema 'sek' sekundiks.
 ```
 
 Näiteks paneb järgnev kood rohelise tule põlema ja kustutab viie sekundi pärast ära ka.
 ```
-foor.roheline();
+foor.vahetaRohelist();
 foor.paus(5);
-foor.roheline();
+foor.vahetaRohelist();
 ``` 
 
 Foori luues saab talle anda kaasa kaks parameetrit:
@@ -37,13 +37,16 @@ Foori luues saab talle anda kaasa kaks parameetrit:
 new Foor(suund, primaryStage);
 ```
 
-**suund** on üks neljast: "üleval", "all", "paremal", "vasakul".  
+**suund** on üks neljast: Foor.YLEMINE
+                          Foor.ALUMINE
+                          Foor.VASAK
+                          Foor.PAREM
 **primaryStage** on see samune, mis start() meetodiga kaasa tuleb. Selle lisamine teiseks parameetriks on vajalik selleks, et kõik foorid ühte aknasse tuua.
 
 Näide, kuidas kaks foori ühe ja sama akna sisse saab:
 ```
-new Foor("üleval", primaryStage);
-new Foor("all", primaryStage);
+new Foor(Foor.YLEMINE, primaryStage);
+new Foor(Foor.ALUMINE, primaryStage);
 ```
 
 ### Harjutus 1
