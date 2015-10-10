@@ -1,9 +1,10 @@
-package foor;
+package teema1;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import lib.Foor;
 
-public class KollaneVilkuja extends Application {
+public class Naidis_KollaneVilkuja extends Application {
 
     public void start(Stage primaryStage) throws Exception {
         Foor foor = new Foor();

@@ -1,4 +1,4 @@
-package foor;
+package lib;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;
