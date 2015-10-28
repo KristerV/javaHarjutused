@@ -16,7 +16,7 @@ public class Peamurdja1_laevad_fx extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        genereeriLaud(9, 9);
+        genereeriLaud(2, 9);
         kaivitaMang();
     }
 
@@ -31,17 +31,17 @@ public class Peamurdja1_laevad_fx extends Application {
             System.out.println("Sisesta Y kordinaat:");
             int y = scanner.nextInt() - 1;
 
-            if (x < 0 || y < 0 || x > laud.length || y > laud[0].length) {
-                System.out.printf("Mängu laud on %s-%s", laud.length, laud[0].length);
+            if (x < 0 || y < 0 || x > laud[0].length || y > laud.length) {
+                System.out.printf("Mängu laud on %s-%s", laud[0].length, laud.length);
                 continue;
             }
 
-            if (laud[x][y] == 1) {
+            if (laud[y][x] == 1) {
                 System.out.println("Said pihta!");
-                laud[x][y] = 2;
-            } else if (laud[x][y] == 2) {
+                laud[y][x] = 2;
+            } else if (laud[y][x] == 2) {
                 System.out.println("Kõmmutad vrakki.");
-            } else if (laud[x][y] == 0) {
+            } else if (laud[y][x] == 0) {
                 System.out.println("Mööda.");
             }
         }
@@ -50,16 +50,16 @@ public class Peamurdja1_laevad_fx extends Application {
 
     private void genereeriLaud(int laius, int pikkus) {
 
-        laud = new int[laius][pikkus];
+        laud = new int[pikkus][laius];
 
-        for (int i = 0; i < laius; i++) {
-            for (int j = 0; j < pikkus; j++) {
+        for (int i = 0; i < pikkus; i++) {
+            for (int j = 0; j < laius; j++) {
                 laud[i][j] = (int) (Math.random() * 2);
             }
         }
 
         System.out.println("Genereeritud laud:");
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < laud.length; i++) {
             System.out.println(Arrays.toString(laud[i]));
         }
     }
