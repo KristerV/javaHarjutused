@@ -12,28 +12,17 @@ import java.util.Scanner;
  *      http://i200.itcollege.ee/javafx-layout-GridPane
  */
 public class Peamurdja1_laevad_fx extends Application {
+    int[][] laud;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        genereeriLaud(9, 9);
+        kaivitaMang();
+    }
 
-        int laius = 9;
-        int pikkus = 9;
-
-        int[][] laud = new int[laius][pikkus];
-
-        for (int i = 0; i < laius; i++) {
-            for (int j = 0; j < pikkus; j++) {
-                laud[i][j] = (int) (Math.random() * 1.01);
-            }
-        }
-
-        System.out.println("Genereeritud laud on järgmine:");
-        for (int i = 0; i < laius; i++) {
-            System.out.println(Arrays.toString(laud[i]));
-        }
-
+    private void kaivitaMang() {
         Scanner scanner = new Scanner(System.in);
-
+        System.out.println("START");
         while(laevuAlles(laud)) {
             System.out.println("\n\n");
 
@@ -42,8 +31,8 @@ public class Peamurdja1_laevad_fx extends Application {
             System.out.println("Sisesta Y kordinaat:");
             int y = scanner.nextInt() - 1;
 
-            if (x < 1 || y < 1 || x > 9 || y > 9) {
-                System.out.println("Mängu laud on 9x9");
+            if (x < 0 || y < 0 || x > laud.length || y > laud[0].length) {
+                System.out.printf("Mängu laud on %s-%s", laud.length, laud[0].length);
                 continue;
             }
 
@@ -57,6 +46,22 @@ public class Peamurdja1_laevad_fx extends Application {
             }
         }
         System.out.println("Said laevadest jagu!");
+    }
+
+    private void genereeriLaud(int laius, int pikkus) {
+
+        laud = new int[laius][pikkus];
+
+        for (int i = 0; i < laius; i++) {
+            for (int j = 0; j < pikkus; j++) {
+                laud[i][j] = (int) (Math.random() * 2);
+            }
+        }
+
+        System.out.println("Genereeritud laud:");
+        for (int i = 0; i < 9; i++) {
+            System.out.println(Arrays.toString(laud[i]));
+        }
     }
 
     private static boolean laevuAlles(int[][] laud) {
