@@ -1,10 +1,14 @@
 package teema2;
 
 import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import java.util.Arrays;
-import java.util.Scanner;
 
 /**
  * 1. Kasuta JavaFX, et joonistada laud ja näita mängu kulgemist.
@@ -12,66 +16,80 @@ import java.util.Scanner;
  *      http://i200.itcollege.ee/javafx-layout-GridPane
  */
 public class Peamurdja1_laevad_fx extends Application {
-    int[][] laud;
+    GridPane laud;
+    int laualTulpasid = 4;
+    int laualRidasid = 4;
+    int ruuduKylg = 50;
+    double laevaToenaosus = 1.6; // suurem on tõenäosem
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        genereeriLaud(2, 9);
-        kaivitaMang();
+
+        // Sea üles JavaFX laud, stseen ja lava
+        laud = new GridPane();
+        Scene scene = new Scene(laud, laualRidasid * ruuduKylg, laualTulpasid * ruuduKylg);
+        primaryStage.setScene(scene);
+
+        // Genereeri laevad
+        int laevasid = 0;
+        for (int i = 0; i < laualRidasid; i++) {
+            for (int j = 0; j < laualTulpasid; j++) {
+                Rectangle ruut = new Rectangle(ruuduKylg, ruuduKylg);
+                int rand = (int) (Math.random() * laevaToenaosus);
+                if (rand == 1) {
+                    ruut.setId("laev");
+                    ruut.setFill(Color.DARKBLUE);
+                    laevasid++;
+                } else {
+                    ruut.setId("tühi");
+                    ruut.setFill(Color.DARKBLUE);
+                }
+                laud.add(ruut, j, i);
+            }
+        }
+        System.out.println("Laevasid on " + laevasid);
+
+        // Reageeri hiire klikile
+        laud.setOnMouseClicked(event -> {
+            Rectangle shape = (Rectangle) event.getTarget();
+            Integer rida = GridPane.getRowIndex(shape);
+            Integer tulp = GridPane.getColumnIndex(shape);
+            String id = shape.getId();
+
+            if (id == "laev") {
+                shape.setId("põhjas");
+                shape.setFill(Color.RED);
+            } else if (id == "tühi") {
+                shape.setId("meri");
+                shape.setFill(Color.BLUE);
+            }
+
+            if (kasMangLabi()) {
+                Label tekst = new Label("Võitsid!");
+                StackPane aken = new StackPane();
+                aken.getChildren().add(tekst);
+                Scene stseen = new Scene(aken, 200,200);
+                primaryStage.setScene(stseen);
+                System.exit(0);
+            }
+        });
+
+        // Näita "lava"
+        primaryStage.show();
     }
 
     private void kaivitaMang() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("START");
-        while(laevuAlles(laud)) {
-            System.out.println("\n\n");
-
-            System.out.println("Sisesta X kordinaat:");
-            int x = scanner.nextInt() - 1;
-            System.out.println("Sisesta Y kordinaat:");
-            int y = scanner.nextInt() - 1;
-
-            if (x < 0 || y < 0 || x > laud[0].length || y > laud.length) {
-                System.out.printf("Mängu laud on %s-%s", laud[0].length, laud.length);
-                continue;
-            }
-
-            if (laud[y][x] == 1) {
-                System.out.println("Said pihta!");
-                laud[y][x] = 2;
-            } else if (laud[y][x] == 2) {
-                System.out.println("Kõmmutad vrakki.");
-            } else if (laud[y][x] == 0) {
-                System.out.println("Mööda.");
-            }
-        }
-        System.out.println("Said laevadest jagu!");
     }
 
     private void genereeriLaud(int laius, int pikkus) {
-
-        laud = new int[pikkus][laius];
-
-        for (int i = 0; i < pikkus; i++) {
-            for (int j = 0; j < laius; j++) {
-                laud[i][j] = (int) (Math.random() * 2);
-            }
-        }
-
-        System.out.println("Genereeritud laud:");
-        for (int i = 0; i < laud.length; i++) {
-            System.out.println(Arrays.toString(laud[i]));
-        }
     }
 
-    private static boolean laevuAlles(int[][] laud) {
-        for (int i = 0; i < laud.length; i++) {
-            for (int j = 0; j < laud[i].length; j++) {
-                if (laud[i][j] == 1) {
-                    return true;
-                }
+    private boolean kasMangLabi() {
+        for (Node node : laud.getChildren()) {
+            if (node.getId() == "laev") {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
