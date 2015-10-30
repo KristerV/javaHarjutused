@@ -9,9 +9,8 @@ import javafx.stage.Stage;
 
 /**
  * 1. Joonista kast kasutades jooni
- * 2. Joonista ring kasutades jooni ( punkt ringjoonel = raadius * cos(kraad) )
- * 3. Joonista spiraal kasutades jooni
- * 4. Joonista propeller kasutades jooni
+ * 2. Joonista spiraal kasutades jooni (vaata ringi meetodi)
+ * 3. Joonista propeller (nagu propeller.png) kasutades jooni
  */
 public class Harjutus2_ringid extends Application {
     int aknaLaius = 500;
@@ -25,6 +24,8 @@ public class Harjutus2_ringid extends Application {
 
         // joonistaKast(pane);
         // joonistaRing(pane);
+        // joonistaSpiraal(pane);
+        joonistaPropeller(pane);
 
         Scene stseen = new Scene(pane, 500, 500);
         primaryStage.setScene(stseen);
@@ -49,11 +50,55 @@ public class Harjutus2_ringid extends Application {
         double keskkohtY = aknaKorgus / 2;
         int raadius = 200;
 
-        for (double nurk = 0; nurk <= Math.PI * 2; nurk = nurk + 0.1) {
+        for (double nurk = 0; nurk <= Math.PI * 2; nurk = nurk + 0.3) {
             int algX = (int) (raadius * Math.cos(nurk));
             int algY = (int) (raadius * Math.sin(nurk));
             int loppX = (int) (raadius * Math.cos(nurk + 0.1));
             int loppY = (int) (raadius * Math.sin(nurk + 0.1));
+            Line joon = new Line(keskkohtX + algX, keskkohtY + algY, keskkohtX + loppX, keskkohtY + loppY);
+            pane.getChildren().add(joon);
+        }
+    }
+
+    private void joonistaSpiraal(Pane pane) {
+        double keskkohtX = aknaLaius / 2;
+        double keskkohtY = aknaKorgus / 2;
+        double raadius = 400;
+
+        for (double nurk = 0; nurk <= Math.PI * 18; nurk = nurk + 0.1) {
+            int algX = (int) (raadius * Math.cos(nurk));
+            int algY = (int) (raadius * Math.sin(nurk));
+            raadius = raadius * 0.99;
+            int loppX = (int) (raadius * Math.cos(nurk + 0.1));
+            int loppY = (int) (raadius * Math.sin(nurk + 0.1));
+            Line joon = new Line(keskkohtX + algX, keskkohtY + algY, keskkohtX + loppX, keskkohtY + loppY);
+            pane.getChildren().add(joon);
+        }
+    }
+
+    private void joonistaPropeller(Pane pane) {
+        double keskkohtX = aknaLaius / 2;
+        double keskkohtY = aknaKorgus / 2;
+        double raadius = 200;
+        int count = 0;
+
+        for (double nurk = 0; nurk <= Math.PI * 2; nurk = nurk + 0.1) {
+            int algX = (int) (raadius * Math.cos(nurk));
+            int algY = (int) (raadius * Math.sin(nurk));
+            double loppX;
+            double loppY;
+            if (count % 2 == 0) {
+                loppX = (int) (raadius * Math.cos(nurk + 0.1));
+                loppY = (int) (raadius * Math.sin(nurk + 0.1));
+            } else {
+                loppX = 0;
+                loppY = 0;
+                Line joon = new Line(keskkohtX + algX, keskkohtY + algY, keskkohtX + loppX, keskkohtY + loppY);
+                pane.getChildren().add(joon);
+                algX = (int) (raadius * Math.cos(nurk + 0.1));
+                algY = (int) (raadius * Math.sin(nurk + 0.1));
+            }
+            count++;
             Line joon = new Line(keskkohtX + algX, keskkohtY + algY, keskkohtX + loppX, keskkohtY + loppY);
             pane.getChildren().add(joon);
         }
