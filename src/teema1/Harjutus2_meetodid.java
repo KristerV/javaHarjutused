@@ -1,5 +1,7 @@
 package teema1;
 
+import java.util.Scanner;
+
 /**
  * 1. Kirjutada meetod, mis tagastab parameetrina etteantud arvu kuubi.
  * 2. Kirjutada meetod, mis saab parameetritena kaks arvu (vahemiku) ning
@@ -10,13 +12,25 @@ package teema1;
 public class Harjutus2_meetodid {
 
     public static void main(String[] args) {
+        int kuup = tostaKuupi(3);
+        int sisestus = kasutajaSisestus("Mitu sõrme on ühel käel?", 0, 5);
+        System.out.println(kuup);
+        System.out.println(sisestus);
     }
 
     public static int tostaKuupi(int arv) {
-        return 0;
+        return arv * arv * arv;
     }
 
     public static int kasutajaSisestus(String kysimus, int min, int max) {
-        return 0;
+        Scanner sc = new Scanner(System.in);
+        System.out.println(kysimus);
+        int sisestus = sc.nextInt();
+        if (sisestus < max && sisestus > min) {
+            return sisestus;
+        } else {
+            System.out.println("Vale vastus, proovi uuesti.");
+            return kasutajaSisestus(kysimus, min, max);
+        }
     }
 }
