@@ -1,22 +1,16 @@
 package teema2;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * 1. Kasuta JavaFX, et joonistada laud ja näita mängu kulgemist.
@@ -25,11 +19,15 @@ import java.util.TimerTask;
  */
 public class Peamurdja1_laevad_fx extends Application {
     GridPane laud;
+    StackPane maailm;
     Stage stage;
     int laualTulpasid = 4;
     int laualRidasid = 4;
     int ruuduKylg = 50;
     double laevaToenaosus = 1.6; // suurem on tõenäosem
+    Image laevaPilt = new Image("teema2/pirate.png");
+    ImagePattern laevaMuster = new ImagePattern(laevaPilt);
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -43,8 +41,18 @@ public class Peamurdja1_laevad_fx extends Application {
     }
 
     private void seadistaStseen() {
+        int piksleidLai = laualTulpasid * ruuduKylg;
+        int piksleidKorge = laualRidasid * ruuduKylg;
+
+        maailm = new StackPane();
+        Rectangle taust = new Rectangle(piksleidLai, piksleidKorge);
+        taust.setFill(Color.BLUE);
+        maailm.getChildren().add(taust);
+
         laud = new GridPane();
-        Scene scene = new Scene(laud, laualRidasid * ruuduKylg, laualTulpasid * ruuduKylg);
+        maailm.getChildren().add(laud);
+
+        Scene scene = new Scene(maailm, piksleidKorge, piksleidLai);
         stage.setScene(scene);
         stage.setOnCloseRequest(event -> System.exit(0));
     }
@@ -58,10 +66,11 @@ public class Peamurdja1_laevad_fx extends Application {
 
             if (id == "laev") {
                 shape.setId("põhjas");
-                shape.setFill(Color.RED);
+                shape.setFill(laevaMuster);
+
             } else if (id == "tühi") {
                 shape.setId("meri");
-                shape.setFill(Color.BLUE);
+                shape.setFill(Color.DARKBLUE);
             }
             if (laevadOnOtsas()) {
                 gameover();
@@ -95,12 +104,11 @@ public class Peamurdja1_laevad_fx extends Application {
                 int rand = (int) (Math.random() * laevaToenaosus);
                 if (rand == 1) {
                     ruut.setId("laev");
-                    ruut.setFill(Color.DARKBLUE);
                     laevasid++;
                 } else {
                     ruut.setId("tühi");
-                    ruut.setFill(Color.DARKBLUE);
                 }
+                ruut.setFill(Color.rgb(0,0,0,0));
                 laud.add(ruut, j, i);
             }
         }
