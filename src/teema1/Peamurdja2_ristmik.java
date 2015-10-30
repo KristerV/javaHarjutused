@@ -27,11 +27,13 @@ public class Peamurdja2_ristmik extends Application {
         while(count < 10) {
             if (count != 0) {
                 foor.vahetaPunast();
-                foor.paus(6);
+                foor.paus(8);
                 foor.vahetaKollast();
                 foor.paus(0.6);
                 foor.vahetaPunast();
                 foor.vahetaKollast();
+            } else {
+                foor.paus(2);
             }
             foor.vahetaRohelist();
             foor.paus(2);
@@ -41,6 +43,9 @@ public class Peamurdja2_ristmik extends Application {
             foor.paus(0.5);
             foor.vahetaRohelist();
             foor.paus(0.5);
+            foor.vahetaRohelist();
+            foor.paus(0.5);
+            foor.vahetaRohelist();
             foor.vahetaKollast();
             foor.paus(0.5);
             foor.vahetaKollast();
