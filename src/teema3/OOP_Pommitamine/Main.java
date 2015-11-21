@@ -2,7 +2,8 @@ package OOP_Pommitamine;
 
 public class Main {
     public static void main(String[] args) {
-        new Mang();
+        new Mang(); // käivitame mängu
+        // Ideaalis siia klassi rohkem midagi ei tahagi.
     }
 }
 

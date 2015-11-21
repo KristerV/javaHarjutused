@@ -6,7 +6,7 @@ import java.util.Scanner;
  * Created by kviirsaa on 21.11.15.
  */
 public class Mangija {
-    private Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in); // kasutame scannerit korduvalt, ei taha uuesti luua iga kord.
 
     public int[] kysiLasuKoordinadid() {
         System.out.println("Palun sisesta lasu koordinaadid formaadis xxx-yyy");
