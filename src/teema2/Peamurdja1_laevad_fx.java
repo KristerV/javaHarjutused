@@ -11,6 +11,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.parser.JSONParser;
+
+import java.io.FileReader;
 
 /**
  * Joonista laevade pommitamine kasutades JavaFXi.
