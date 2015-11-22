@@ -4,89 +4,55 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Created by krister on 20.11.15.
+ * Created by kviirsaa on 21.11.15.
  */
 public class Laev {
-    private int[][] laevaKordinaadid;
-    private staatused[] laevaSeis;
+    private int[] kordinaadid;
+    private boolean elus = true;
 
-    public enum staatused {
-        ELAB, PIHTAS;
+    public Laev(int mereServaPikkus) {
+        System.out.println("START LAEV");
 
+        // Konstruktor on parem tühjaks jätta. Seega tegevuse jaoks kutsume välja meetodi.
+        genereeriKordinaadid(mereServaPikkus);
     }
-    public Laev(int laevaPikkus, int lauaLaius, int lauaKorgus) {
 
-        // Genereeri laeva laevaKordinaadid
-        laevaKordinaadid = new int[laevaPikkus][];
-        genereeriKordinaadid(laevaPikkus, lauaLaius, lauaKorgus);
-
-        // Märgi kõik ruudud ELAVaks
-        laevaSeis = new staatused[laevaPikkus];
-        for (int i = 0; i < laevaPikkus; i++) {
-            laevaSeis[i] = staatused.ELAB;
-        }
-    }
-    private void genereeriKordinaadid(int laevaPikkus, int lauaLaius, int lauaKorgus) {
+    private void genereeriKordinaadid(int mereServaPikkus) {
         Random rand = new Random();
-        int x = Math.abs(rand.nextInt(lauaLaius));
-        int y = Math.abs(rand.nextInt(lauaKorgus));
-        int[] punkt = {x, y};
-        boolean suund = rand.nextBoolean();
-        for (int i = 0; i < laevaPikkus; i++) {
-            if (x + laevaPikkus > lauaLaius) {
-                punkt[0] -= 1;
-            } else if (y + laevaPikkus > lauaKorgus) {
-                punkt[1] -= 1;
-            } else if (suund) {
-                punkt[0] += 1;
-            } else {
-                punkt[1] += 1;
-            }
-            laevaKordinaadid[i] = Arrays.copyOf(punkt, punkt.length);
-        }
+        int x = rand.nextInt(mereServaPikkus);
+        int y = rand.nextInt(mereServaPikkus);
+        kordinaadid = new int[]{x, y};
+        System.out.println(Arrays.toString(kordinaadid));
     }
 
-    public void kuvaKordinaadid() {
-        System.out.println("Laeva laevaKordinaadid:");
-        for (int i = 0; i < laevaKordinaadid.length; i++) {
-            System.out.println(Arrays.toString(laevaKordinaadid[i]));
-        }
+    // Parem on muutuja private hoida ja teha eraldi meetod väärtuse välja küsimiseks
+    // või uue võõrtuse määramiseks - nii on sul rohkem kontrolli ja kindlust, et muutujat
+    // ei kuritarvitata (kas sinu enda või teise arendaja poolt).
+    public boolean kasOledElus() {
+        return elus;
     }
 
-    public boolean oledElus() {
-        for (staatused staatus : laevaSeis) {
-            if (staatus == staatused.ELAB) {
-                return true;
-            }
+    // Pommitamine ise
+    public boolean kasSaidPihta(int[] lask) {
+        if (Arrays.equals(lask, kordinaadid) && elus) { // pihta saab saada ainult elus laev, kelle kordinaadid kattuvad
+            elus = false;
+            return true;
         }
         return false;
     }
 
-    public boolean lask(int[] laskeKordinaadid) {
-        for (int i = 0; i < laevaKordinaadid.length; i++) {
-            int[] kordinaadid = laevaKordinaadid[i];
-            if (Arrays.equals(kordinaadid, laskeKordinaadid) && laevaSeis[i] == staatused.ELAB) {
-                laevaSeis[i] = staatused.PIHTAS;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public int[][] getLaevaKordinaadid() {
-        return laevaKordinaadid;
-    }
-
-    public boolean kasElusKordinaadil(int[] kordinaatElus) {
-        for (int i = 0; i < laevaKordinaadid.length; i++) {
-            if (laevaKordinaadid[i].equals(kordinaatElus)) {
-                return laevaSeis[i] == staatused.ELAB;
-            }
-        }
-        return false;
-    }
-
-    public staatused[] getLaevaSeis() {
-        return laevaSeis;
+    // Jällegi, parem on eraldi meetod kirjutada kui muutuja publicuks teha, et keegi kogemata ei väärtarvita objekti.
+    public int[] annaKoordinaadid() {
+        return kordinaadid;
     }
 }
+
+
+
+
+
+
+
+
+
+

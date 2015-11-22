@@ -1,41 +1,42 @@
 package teema3.OOP_Pommitamine;
 
+import java.util.Arrays;
+
 /**
- * Created by krister on 20.11.15.
+ * Created by kviirsaa on 21.11.15.
  */
 public class Meri {
-    Laev[] laevastik = new Laev[5];
-    int lauaServaPikkus;
+    private int mereServaPikkus;
+    private Laev[] laevastik = new Laev[5];
 
-    public Meri(int laius) {
-        lauaServaPikkus = laius;
-        genereeriLaevastik();
+    // Klass Meri konstruktor, ehk esimene meetod mis käivitub kohe objekti välja kutsudes.
+    public Meri(int pikkus) {
+        System.out.println("START MERI");
+        mereServaPikkus = pikkus; // salvestame klassi külge väärtuse, hiljem kindlasti vaja
+        looLaevastik();
     }
 
-    private void genereeriLaevastik() {
-        for (int i = 0; i < laevastik.length; i++) {
-            laevastik[i] = new Laev(i+1, lauaServaPikkus, lauaServaPikkus);
+    private void looLaevastik() {
+        for (int i = 0; i < laevastik.length; i++) { // laevastikku tuleb 5 laeva (vt. laevastik definitsioon)
+            laevastik[i] = new Laev(mereServaPikkus); // loo uus laev ja salvesta laevastik muutujasse
         }
     }
 
-    public void kuva() {
+    // Kasutame siis, kui tahame teada, kas mäng on läbi
+    public boolean kasOnLaevuElus() {
         for (Laev laev : laevastik) {
-            laev.kuvaKordinaadid();
-        }
-    }
-
-    public boolean laevuAlles() {
-        for (Laev laev : laevastik) {
-            if (laev.oledElus()) {
+            boolean elus = laev.kasOledElus();
+            if (elus) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean lask(int[] laskeKordinaadid) {
-        for (Laev laev : laevastik) {
-            boolean pihtas = laev.lask(laskeKordinaadid);
+    // Kasutame pommitamisel. Meri ei tea kus laevad on, küsime siis laevade endi käest.
+    public boolean kasKeegiSaiPihta(int[] lask) {
+        for (Laev laev : laevastik) { // foreach tsükkel, googelda.
+            boolean pihtas = laev.kasSaidPihta(lask);
             if (pihtas) {
                 return true;
             }
@@ -43,30 +44,38 @@ public class Meri {
         return false;
     }
 
-    public void kuvaLaud() {
-        char[][] laud = new char[lauaServaPikkus][lauaServaPikkus];
-        for (int i = 0; i < laud.length; i++) {
-            for (int j = 0; j < laud[i].length; j++) {
-                laud[i][j] = '~';
+    // Tahame mängu seisu näha - millised laevad on juba põhja lastud.
+    public void kuvaSeis() {
+
+        // Loome laua maatriksi
+        int[][] laud = new int[mereServaPikkus][mereServaPikkus];
+
+        // Iga laeva kohta laevastikus
+        for (Laev laev : laevastik) {
+            int[] koordinaadid = laev.annaKoordinaadid(); // küsi kordinaadid
+            boolean elus = laev.kasOledElus(); // ja kas on elus
+            int x = koordinaadid[0];
+            int y = koordinaadid[1];
+            if (!elus) { // kui ei ole elus (näita ainult pihta saadud laevu)
+                laud[y][x] = 2; // siis sisesta laua maatriksile märge põhja läinud laevast.
             }
         }
-        for (int i = 0; i < laevastik.length; i++) {
-            Laev laev = laevastik[i];
-            int[][] kordinaadid = laev.getLaevaKordinaadid();
-            for (int j = 0; j < kordinaadid.length; j++) {
-                int[] k = kordinaadid[j];
-                if (laev.kasElusKordinaadil(k)) {
-                    laud[k[0]][k[1]] = 'O';
-                } else {
-                    laud[k[0]][k[1]] = 'X';
-                }
-            }
-        }
+
+        // Prindi uus maatriks välja
         for (int i = 0; i < laud.length; i++) {
-            for (int j = 0; j < laud[i].length; j++) {
-                System.out.print(" " + laud[j][i]);
-            }
-            System.out.println();
+            System.out.println(Arrays.toString(laud[i]));
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
