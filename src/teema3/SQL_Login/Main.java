@@ -9,6 +9,7 @@ import javafx.stage.Stage;
  *
  * ENNE KUI SAAD ALUSTADA OMA PROJEKTIGA pean sqlite.jar'i alla laadima (https://bitbucket.org/xerial/sqlite-jdbc/downloads),
  * oma projekti tooma (soovitan /lib/ kausta) ja aktiveerima - klikkides .jar failile parema klikiga ja valides "Add as Library".
+ * Muide, vahel mingil veidral põhjusel peab uuesti "Add as Library.." käsku käivitama.
  *
  * Edasi vaata Andmenaas.java kuidas seda aska kasutada. Käesolevas programmis on kaks akent: LoginScreen ja UserDetails. Ehk
  * kasutaja saab esiteks registreerida või sisse logida ja siis oma andmeid muuta.

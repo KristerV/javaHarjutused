@@ -26,7 +26,7 @@ public class Andmebaas {
     // Et andmebaasist kasu oleks, loome uue tabeli. See on nagu uus 'sheet' excelis.
     public void looTabel() {
         // Käsk ise on CREATE TABLE ja sulgude vahel on kõik tulbad, mida tahan, et tabel hoiaks.
-        String sql = "CREATE TABLE USERS (ID INT AUTO_INCREMENT, USERNAME TEXT, " + // jätkub järgmisel real
+        String sql = "CREATE TABLE IF NOT EXISTS USERS (ID INT AUTO_INCREMENT, USERNAME TEXT, " + // jätkub järgmisel real
                 "PASSWORD TEXT, FULLNAME TEXT, NUMBER INT, ADDRESS TEXT);";
         teostaAndmebaasiMuudatus(sql);
     }
