@@ -1,4 +1,4 @@
-package teema3.SQL;
+package teema3.SQL_Login;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -59,7 +59,7 @@ public class LoginScreen {
             String nimi = kasutajanimi.getText();
             String p = parool.getText();
             Andmebaas a = new Andmebaas();
-            a.register(nimi, p);
+            a.registreeriKasutaja(nimi, p);
             a.sulgeYhendus();
         });
     }
